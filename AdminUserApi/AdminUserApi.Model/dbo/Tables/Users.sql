@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Users]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT (newid()), 
-    [Code] INT NOT NULL IDENTITY(1,1),
+    [Code] VARCHAR(100) NOT NULL UNIQUE,
     [Name] VARCHAR(100) NOT NULL, 
     [LastName] VARCHAR(100) NOT NULL, 
     [Address] VARCHAR(500) NOT NULL, 
@@ -9,6 +9,7 @@
     [Email] VARCHAR(200) NOT NULL, 
     [Age] INT NOT NULL, 
     [RoleId] UNIQUEIDENTIFIER NOT NULL,
+    [Password] VARCHAR(500) NOT NULL, 
     CONSTRAINT [FK_Users_Role] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id])
 )
 

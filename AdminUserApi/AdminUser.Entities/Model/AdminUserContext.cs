@@ -39,12 +39,17 @@ namespace AdminUser.Entities.Model
             {
                 entity.ToTable("Permission");
 
+                entity.HasIndex(e => e.Code, "UQ__Permissi__A25C5AA7188807E5")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del Permiso");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasComment("Código unico del Permiso");
 
                 entity.Property(e => e.Name)
@@ -83,12 +88,17 @@ namespace AdminUser.Entities.Model
             {
                 entity.ToTable("Role");
 
+                entity.HasIndex(e => e.Code, "UQ__Role__A25C5AA76F602BFB")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del Rol");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasComment("Código unico del Rol");
 
                 entity.Property(e => e.Name)
@@ -99,6 +109,9 @@ namespace AdminUser.Entities.Model
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.Code, "UQ__Users__A25C5AA74E19F1CA")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del usuario");
@@ -112,7 +125,9 @@ namespace AdminUser.Entities.Model
                 entity.Property(e => e.Age).HasComment("Edad del usuario");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
                     .HasComment("Código unico del usuario");
 
                 entity.Property(e => e.Email)
@@ -132,6 +147,11 @@ namespace AdminUser.Entities.Model
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasComment("Nombre del usuario");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Phone)
                     .IsRequired()

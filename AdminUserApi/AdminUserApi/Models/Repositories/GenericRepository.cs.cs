@@ -11,9 +11,9 @@ namespace AdminUserApi.Models.Repositories
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, new()
     {
         private readonly AdminUserDBcontext _AdminUserDBcontext;
-        public GenericRepository(AdminUserDBcontext DeportesDBcontext)
+        public GenericRepository(AdminUserDBcontext AdminUserDBcontext)
         {
-            _AdminUserDBcontext = DeportesDBcontext;
+            _AdminUserDBcontext = AdminUserDBcontext;
         }
 
         public async Task<TEntity> Add(TEntity entity)
@@ -44,6 +44,16 @@ namespace AdminUserApi.Models.Repositories
         public async Task<List<TEntity>> GetList(Expression<Func<TEntity, bool>> filter = null)
         {
             return await (filter == null ? _AdminUserDBcontext.Set<TEntity>().ToListAsync() : _AdminUserDBcontext.Set<TEntity>().Where(filter).ToListAsync());
+        }
+
+        public async Task<List<TEntity>> GetListInclude(Expression<Func<TEntity, bool>> filter, params string[] properties) {
+            var set = _AdminUserDBcontext.Set<TEntity>();
+            foreach (string property in properties)
+            {
+                set.Include(property);
+            }
+            if (filter == null) return await set.ToListAsync();
+            else return await set.Where(filter).ToListAsync();
         }
 
         public async Task<TEntity> Update(TEntity entity)

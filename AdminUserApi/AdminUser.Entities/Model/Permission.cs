@@ -13,7 +13,7 @@ namespace AdminUser.Entities.Model
         }
 
         public Guid Id { get; set; }
-        public int Code { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<PermissionRole> PermissionRoles { get; set; }

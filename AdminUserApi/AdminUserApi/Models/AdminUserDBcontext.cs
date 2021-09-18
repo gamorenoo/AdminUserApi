@@ -19,12 +19,17 @@ namespace AdminUserApi.Models
             {
                 entity.ToTable("Permission");
 
+                entity.HasIndex(e => e.Code, "UQ__Permissi__A25C5AA7188807E5")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del Permiso");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasComment("Código unico del Permiso");
 
                 entity.Property(e => e.Name)
@@ -45,18 +50,35 @@ namespace AdminUserApi.Models
                 entity.Property(e => e.PermissionId).HasComment("Identificador del Permiso");
 
                 entity.Property(e => e.RoleId).HasComment("Identificador del Rol");
+
+                entity.HasOne(d => d.Permission)
+                    .WithMany(p => p.PermissionRoles)
+                    .HasForeignKey(d => d.PermissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionRole_Permission");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.PermissionRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionRole_Role");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Role");
 
+                entity.HasIndex(e => e.Code, "UQ__Role__A25C5AA76F602BFB")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del Rol");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasComment("Código unico del Rol");
 
                 entity.Property(e => e.Name)
@@ -65,8 +87,11 @@ namespace AdminUserApi.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<Users>(entity =>
             {
+                entity.HasIndex(e => e.Code, "UQ__Users__A25C5AA7F194ABDE")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasDefaultValueSql("(newid())")
                     .HasComment("Identificador unico del usuario");
@@ -80,7 +105,9 @@ namespace AdminUserApi.Models
                 entity.Property(e => e.Age).HasComment("Edad del usuario");
 
                 entity.Property(e => e.Code)
-                    .ValueGeneratedOnAdd()
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
                     .HasComment("Código unico del usuario");
 
                 entity.Property(e => e.Email)

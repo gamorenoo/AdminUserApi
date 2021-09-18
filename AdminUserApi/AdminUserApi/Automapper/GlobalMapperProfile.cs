@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using AdminUserApi.Domain.Entities;
+using AdminUserApi.DTOs;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace AdminUserApi.Automapper
         /// </summary>
         public GlobalMapperProfile() : base()
         {
-
+            CreateMap<UsersDTO, Users>();
         }
     }
 }

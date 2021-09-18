@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using AdminUserApi.DI;
 using AutoMapper;
 using AdminUserApi.Automapper;
+using AdminUserApi.Application;
+using AdminUserApi.Domain.Services;
 
 namespace AdminUserApi
 {
@@ -29,7 +31,13 @@ namespace AdminUserApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddControllers()
+            .AddNewtonsoftJson(options =>{
+                 options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+             });
             ConfigSwagger(services);
             
             DependencyInjectionProfile dependencyInjection = new DependencyInjectionProfile(Configuration);
