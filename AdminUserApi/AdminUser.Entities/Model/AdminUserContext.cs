@@ -1,15 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AdminUserApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace AdminUserApi.Models
+#nullable disable
+
+namespace AdminUser.Entities.Model
 {
-    public class AdminUserDBcontext : DbContext
+    public partial class AdminUserContext : DbContext
     {
-        public AdminUserDBcontext(DbContextOptions<AdminUserDBcontext> options) : base(options) { }
+        public AdminUserContext()
+        {
+        }
+
+        public AdminUserContext(DbContextOptions<AdminUserContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=AdminUser;User Id=sa;Password=root;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +65,18 @@ namespace AdminUserApi.Models
                 entity.Property(e => e.PermissionId).HasComment("Identificador del Permiso");
 
                 entity.Property(e => e.RoleId).HasComment("Identificador del Rol");
+
+                entity.HasOne(d => d.Permission)
+                    .WithMany(p => p.PermissionRoles)
+                    .HasForeignKey(d => d.PermissionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionRole_Permission");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.PermissionRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PermissionRole_Role");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -115,6 +147,10 @@ namespace AdminUserApi.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Users_Role");
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

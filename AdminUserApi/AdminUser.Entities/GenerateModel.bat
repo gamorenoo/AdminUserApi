@@ -1,0 +1,1 @@
+﻿dotnet ef dbcontext scaffold "Server=localhost;Database=AdminUser;User Id=sa;Password=root;" Microsoft.EntityFrameworkCore.SqlServer -o Model
