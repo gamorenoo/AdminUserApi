@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AdminUserApi.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminUserApi.Controllers
 {
@@ -32,6 +33,7 @@ namespace AdminUserApi.Controllers
         /// Obtiene la lista de todos los usuarios
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> get()
         {

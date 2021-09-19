@@ -2,6 +2,10 @@
 using System.Threading.Tasks;
 using AdminUserApi.Application;
 using Microsoft.AspNetCore.Mvc;
+using AdminUserApi.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using static AdminUserApi.Utilities.JwtAuth;
 
 namespace AdminUserApi.Controllers
 {
@@ -14,6 +18,8 @@ namespace AdminUserApi.Controllers
         /// Servicio de aplicacion administracion depermisos
         /// </summary>
         private readonly UserAppService _userAppService;
+
+        public IConfiguration Configuration { get; }
         #endregion
 
         #region Builders
@@ -21,9 +27,10 @@ namespace AdminUserApi.Controllers
         /// Constructor
         /// </summary>
         /// <param name="userAppService"></param>
-        public UserController(UserAppService userAppService)
+        public UserController(UserAppService userAppService, IConfiguration configuration)
         {
             _userAppService = userAppService;
+            Configuration = configuration;
         }
         #endregion
 
@@ -32,6 +39,7 @@ namespace AdminUserApi.Controllers
         /// Crea o actualiza un usuario
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         // [Route("Add")]
         public async Task<ActionResult> save(UsersDTO user)
@@ -51,6 +59,7 @@ namespace AdminUserApi.Controllers
         /// Obtiene la lista de todos los usuarios
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> get()
         {
@@ -70,6 +79,7 @@ namespace AdminUserApi.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("{code}")]
         public async Task<ActionResult> getByCode(string code)
@@ -101,7 +111,12 @@ namespace AdminUserApi.Controllers
             }
             else if (result.GetType().Name.Equals("Users"))
             {
-                return Ok(result);
+                LoginResponseDTO response = new LoginResponseDTO()
+                {
+                    User = (Users)result,
+                    Token = Authenticate(code, password, Configuration.GetValue<string>("TokenKey"))
+                };
+                return Ok(response);
             }
             else
             {
@@ -114,6 +129,7 @@ namespace AdminUserApi.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult> delete(string code)
         {

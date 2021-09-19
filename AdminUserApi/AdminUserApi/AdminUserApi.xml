@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdminUserApi</name>
+    </assembly>
+    <members>
+        <member name="T:AdminUserApi.Application.JwtAuthAppService">
+            <summary>
+            Servicio de aplicacion para manejo del token
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Application.JwtAuthAppService._key">
+            <summary>
+            llave
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.JwtAuthAppService.#ctor(System.String)">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="F:AdminUserApi.Application.PermissionRoleAppService._permissionRoleDomainService">
+            <summary>
+            Servicio de dominio para admiinstracion de roles y permisos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.PermissionRoleAppService.#ctor(AdminUserApi.Domain.Services.PermissionRoleDomainService)">
+            <summary>
+            Constructor de la clase
+            </summary>|
+            <param name="permissionRoleDomainService"></param>
+        </member>
+        <member name="M:AdminUserApi.Application.PermissionRoleAppService.SetInitialData">
+            <summary>
+            Realiza la inicializacion de Roles y Permisos en la Base de datos
+            </summary>
+        </member>
+        <member name="T:AdminUserApi.Application.RoleAppService">
+            <summary>
+            Servicio de aplicacion para el control de roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Application.RoleAppService._roleDomainService">
+            <summary>
+            Servicio de dominio para admiinstracion de usuario
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.RoleAppService.#ctor(AdminUserApi.Domain.Services.RoleDomainService)">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="roleDomainService"></param>
+        </member>
+        <member name="M:AdminUserApi.Application.RoleAppService.Get">
+            <summary>
+            Obtiene la lista de usuarios
+            </summary>
+        </member>
+        <member name="T:AdminUserApi.Application.UserAppService">
+            <summary>
+            Servicio de aplicacion para el control de usuarios
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Application.UserAppService._userDomainService">
+            <summary>
+            Servicio de dominio para admiinstracion de usuario
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.#ctor(AdminUserApi.Domain.Services.UserDomainService)">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="userDomainService"></param>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.Save(AdminUserApi.DTOs.UsersDTO)">
+            <summary>
+            Realiza la creacion o actualizacion de un usuario
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.Get">
+            <summary>
+            Obtiene la lista de usuarios
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.GetBycode(System.String)">
+            <summary>
+            Obtiene un usuario por su codigo
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.Login(System.String,System.String)">
+            <summary>
+            Obtiene un usuario por su codigo
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Application.UserAppService.Delete(System.String)">
+            <summary>
+            Elimina un usuario
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Automapper.GlobalMapperProfile.#ctor">
+            <summary>
+            Inicia una nueva instancia del perfil
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Controllers.PermissionRoleController._permissionRoleAppService">
+            <summary>
+            Servicio de aplicacion administracion depermisos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Controllers.PermissionRoleController.#ctor(AdminUserApi.Application.PermissionRoleAppService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="permissionRoleAppService"></param>
+        </member>
+        <member name="M:AdminUserApi.Controllers.PermissionRoleController.SetInitialData">
+            <summary>
+            Crea la configuracion inicial de roles y permisos
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:AdminUserApi.Controllers.RoleController._roleAppService">
+            <summary>
+            Servicio de aplicacion administracion depermisos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Controllers.RoleController.#ctor(AdminUserApi.Application.RoleAppService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="roleAppService"></param>
+        </member>
+        <member name="M:AdminUserApi.Controllers.RoleController.get">
+            <summary>
+            Obtiene la lista de todos los usuarios
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:AdminUserApi.Controllers.UserController._userAppService">
+            <summary>
+            Servicio de aplicacion administracion depermisos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.#ctor(AdminUserApi.Application.UserAppService,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="userAppService"></param>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.save(AdminUserApi.DTOs.UsersDTO)">
+            <summary>
+            Crea o actualiza un usuario
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.get">
+            <summary>
+            Obtiene la lista de todos los usuarios
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.getByCode(System.String)">
+            <summary>
+            Obtiene un usuario por su codigo
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.login(System.String,System.String)">
+            <summary>
+            Valiad usuario y clave
+            </summary>
+            <param name="code"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminUserApi.Controllers.UserController.delete(System.String)">
+            <summary>
+            Elimina un usuario
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.PermissionRoleDomainService._roleRepository">
+            <summary>
+            Repositorio de roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.PermissionRoleDomainService._permissionRepository">
+            <summary>
+            Repositorio de permisos
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.PermissionRoleDomainService._permissionRoleRepository">
+            <summary>
+            Repositorio de relacion entre permisos y roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.PermissionRoleDomainService._userRepository">
+            <summary>
+            Repositorio de relacion entre permisos y roles
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.PermissionRoleDomainService.#ctor(AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Role},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Permission},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.PermissionRole},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Users})">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="userRepository"></param>
+            <param name="roleRepository"></param>
+            <param name="permissionRepository"></param>
+            <param name="permissionRoleRepository"></param>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.PermissionRoleDomainService.SetInitialData">
+            <summary>
+            Realiza la inicializacion de Roles y Permisos en la Base de datos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.PermissionRoleDomainService.setRoles(System.Collections.Generic.List{AdminUserApi.Domain.Entities.Permission})">
+            <summary>
+            Inserta los roles por defecto
+            </summary>
+            <param name="permissions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.PermissionRoleDomainService.setPermissions">
+            <summary>
+            Inserta Los Permisos por defecto 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AdminUserApi.Domain.Services.RoleDomainService">
+            <summary>
+            Servico de dominio para la administracion de Roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.RoleDomainService._mapper">
+            <summary>
+            Mapper
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.RoleDomainService._roleRepository">
+            <summary>
+            Repositorio de roles
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.RoleDomainService.#ctor(AutoMapper.IMapper,AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Role})">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="userRepository"></param>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.RoleDomainService.Get">
+            <summary>
+            Consulta todos los roles
+            </summary>
+        </member>
+        <member name="T:AdminUserApi.Domain.Services.UserDomainService">
+            <summary>
+            Servicio de dominio para la administracion de usuarios
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.UserDomainService._mapper">
+            <summary>
+            Mapper
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.UserDomainService._userRepository">
+            <summary>
+            Repositorio de roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.UserDomainService._roleRepository">
+            <summary>
+            Repositorio de roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.UserDomainService._permissionRoleRepository">
+            <summary>
+            Repositorio de relacion entre permisos y roles
+            </summary>
+        </member>
+        <member name="F:AdminUserApi.Domain.Services.UserDomainService._permissionRepository">
+            <summary>
+            Repositorio de permisos
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.#ctor(AutoMapper.IMapper,AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Users},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Role},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.PermissionRole},AdminUserApi.Models.Repositories.IRepositories.IGenericRepository{AdminUserApi.Domain.Entities.Permission})">
+            <summary>
+            Constructor de la clase
+            </summary>
+            <param name="userRepository"></param>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.Save(AdminUserApi.DTOs.UsersDTO)">
+            <summary>
+            Realiza la creacion o actualizacion de un usuario
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.Get">
+            <summary>
+            Obtiene la lista de usuarios
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.GetBycode(System.String)">
+            <summary>
+            Obtiene un usuario por su codigo
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.Login(System.String,System.String)">
+            <summary>
+            Obtiene un usuario por su codigo
+            </summary>
+        </member>
+        <member name="M:AdminUserApi.Domain.Services.UserDomainService.Delete(System.String)">
+            <summary>
+            Elimina un usuario
+            </summary>
+        </member>
+    </members>
+</doc>

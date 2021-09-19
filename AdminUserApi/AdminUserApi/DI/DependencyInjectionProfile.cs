@@ -44,6 +44,7 @@ namespace AdminUserApi.DI
             services.AddTransient<PermissionRoleAppService>();
             services.AddTransient<UserAppService>();
             services.AddTransient<RoleAppService>();
+            //services.AddTransient<JwtAuthAppService>();
 
             #endregion
         }
