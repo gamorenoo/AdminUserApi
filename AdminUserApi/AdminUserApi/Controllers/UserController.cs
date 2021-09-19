@@ -1,12 +1,7 @@
-﻿using AdminUserApi.Application;
-using AdminUserApi.Domain.Entities;
-using AdminUserApi.DTOs;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AdminUserApi.DTOs;
 using System.Threading.Tasks;
+using AdminUserApi.Application;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AdminUserApi.Controllers
 {
@@ -31,6 +26,7 @@ namespace AdminUserApi.Controllers
             _userAppService = userAppService;
         }
         #endregion
+
         #region Metodos
         /// <summary>
         /// Crea o actualiza un usuario
@@ -51,6 +47,10 @@ namespace AdminUserApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene la lista de todos los usuarios
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult> get()
         {
@@ -61,10 +61,15 @@ namespace AdminUserApi.Controllers
             }
             else
             {
-                return BadRequest("Error al consultar el usuario:" + (string)result);
+                return BadRequest("Error al consultar los usuario:" + (string)result);
             }
         }
 
+        /// <summary>
+        /// Obtiene un usuario por su codigo
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{code}")]
         public async Task<ActionResult> getByCode(string code)
@@ -79,13 +84,20 @@ namespace AdminUserApi.Controllers
                 return BadRequest("Error al consultar el usuario:" + (string)result);
             }
         }
+
+        /// <summary>
+        /// Valiad usuario y clave
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("login")]
         public async Task<ActionResult> login(string code, string password)
         {
             var result = await _userAppService.Login(code, password);
             if (result == null) {
-                return NotFound("No se encuentra usuario asociado al codigo: " + code );
+                return NoContent();
             }
             else if (result.GetType().Name.Equals("Users"))
             {
@@ -94,6 +106,25 @@ namespace AdminUserApi.Controllers
             else
             {
                 return BadRequest("Error al consultar el usuario:" + (string)result);
+            }
+        }
+
+        /// <summary>
+        /// Elimina un usuario
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<ActionResult> delete(string code)
+        {
+            var result = await _userAppService.Delete(code);
+            if (result.GetType().Name.Equals("Boolean"))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Error al eliminar el usuario:" + (string)result);
             }
         }
         #endregion

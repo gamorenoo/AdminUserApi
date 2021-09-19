@@ -1,13 +1,16 @@
-﻿using AdminUserApi.Domain.Entities;
-using AdminUserApi.Domain.Services;
-using AdminUserApi.DTOs;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using AdminUserApi.DTOs;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using AdminUserApi.Domain.Entities;
+using AdminUserApi.Domain.Services;
 
 namespace AdminUserApi.Application
 {
+    /// <summary>
+    /// Servicio de aplicacion para el control de usuarios
+    /// </summary>
     public class UserAppService
     {
         #region Propiedades
@@ -41,6 +44,10 @@ namespace AdminUserApi.Application
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                if (ex.Message.Contains("An error occurred while updating the entries. See the inner exception for details") && ex.InnerException.Message.Contains("Cannot insert duplicate key in object 'dbo.Users'"))
+                {
+                    return "El usuario con código " + user.Code + " ya está registrado en la base de datos";
+                }
                 return ex.Message;
             }
         }
@@ -85,6 +92,22 @@ namespace AdminUserApi.Application
             try
             {
                 return await _userDomainService.Login(Code, Password);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Elimina un usuario
+        /// </summary>
+        public async Task<object> Delete(string Code)
+        {
+            try
+            {
+                return await _userDomainService.Delete(Code);
             }
             catch (Exception ex)
             {

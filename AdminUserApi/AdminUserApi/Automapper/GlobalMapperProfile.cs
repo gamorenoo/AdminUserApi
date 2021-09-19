@@ -16,6 +16,9 @@ namespace AdminUserApi.Automapper
         public GlobalMapperProfile() : base()
         {
             CreateMap<UsersDTO, Users>();
+            CreateMap<Users, UsersDTO>()
+                .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role.Name));
+            CreateMap<Role, RoleDTO>();
         }
     }
 }

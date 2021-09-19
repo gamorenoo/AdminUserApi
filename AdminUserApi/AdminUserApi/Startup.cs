@@ -32,6 +32,15 @@ namespace AdminUserApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("Default_CorsPolicy", o =>
+                {
+                    o.AllowAnyHeader();
+                    o.AllowAnyMethod();
+                    o.AllowAnyOrigin();
+                });
+            });
             services.AddControllers()
             .AddNewtonsoftJson(options =>{
                  options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
@@ -57,6 +66,7 @@ namespace AdminUserApi
                 });
             }
 
+            app.UseCors("Default_CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();

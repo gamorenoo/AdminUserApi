@@ -17,5 +17,6 @@ namespace AdminUserApi.DTOs
         public int Age { get; set; }
         public Guid RoleId { get; set; }
         public string Password { get; set; }
+        public string RoleName { get; set; }
     }
 }

@@ -37,11 +37,13 @@ namespace AdminUserApi.DI
             #region Servicios de dominio
             services.AddTransient<PermissionRoleDomainService>();
             services.AddTransient<UserDomainService>();
+            services.AddTransient<RoleDomainService>();
             #endregion
 
             #region Servicios de aplicacion
             services.AddTransient<PermissionRoleAppService>();
             services.AddTransient<UserAppService>();
+            services.AddTransient<RoleAppService>();
 
             #endregion
         }

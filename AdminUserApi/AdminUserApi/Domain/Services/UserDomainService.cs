@@ -1,14 +1,17 @@
-﻿using AdminUserApi.Domain.Entities;
-using AdminUserApi.DTOs;
-using AdminUserApi.Models.Repositories.IRepositories;
+﻿using System;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using AdminUserApi.DTOs;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using AdminUserApi.Domain.Entities;
+using AdminUserApi.Models.Repositories.IRepositories;
 
 namespace AdminUserApi.Domain.Services
 {
+    /// <summary>
+    /// Servicio de dominio para la administracion de usuarios
+    /// </summary>
     public class UserDomainService
     {
         #region Propiedades
@@ -72,9 +75,16 @@ namespace AdminUserApi.Domain.Services
         /// <summary>
         /// Obtiene la lista de usuarios
         /// </summary>
-        public async Task<IEnumerable<Users>> Get()
+        public async Task<IEnumerable<UsersDTO>> Get()
         {
-            return await _userRepository.GetList();
+            var users = await _userRepository.GetList();
+            foreach (var user in users)
+            {
+                user.Role = await _roleRepository.Get(r => r.Id.Equals(user.RoleId));
+                byte[] myBase64ret = Convert.FromBase64String(user.Password);
+                user.Password = System.Text.Encoding.UTF8.GetString(myBase64ret);
+            }
+            return _mapper.Map<IEnumerable<UsersDTO>>(users);
         }
 
         /// <summary>
@@ -83,7 +93,10 @@ namespace AdminUserApi.Domain.Services
         public async Task<Users> GetBycode(string Code)
         {
             var resutl = await _userRepository.GetList(u => u.Code.Equals(Code));
-            return resutl.FirstOrDefault();
+            var user = resutl.FirstOrDefault();
+            byte[] myBase64ret = Convert.FromBase64String(user.Password);
+            user.Password = System.Text.Encoding.UTF8.GetString(myBase64ret);
+            return user;
         }
 
         /// <summary>
@@ -93,16 +106,27 @@ namespace AdminUserApi.Domain.Services
         {
             byte[] myByte = System.Text.Encoding.UTF8.GetBytes(Password);
             Password = Convert.ToBase64String(myByte);
-            var resutl = await _userRepository.GetList(u => u.Code.Equals(Code) && u.Password.Equals(Password));
-            Users user = resutl.FirstOrDefault();
+            Users user = await _userRepository.Get(u => u.Code.Equals(Code) && u.Password.Equals(Password));
+            if (user == null) return null;
             user.Role = _roleRepository.GetList(r => r.Id.Equals(user.RoleId)).GetAwaiter().GetResult().FirstOrDefault();
             user.Role.PermissionRoles = _permissionRoleRepository.GetList(pr => pr.RoleId.Equals(user.RoleId)).GetAwaiter().GetResult().ToList();
-
+            byte[] myBase64ret = Convert.FromBase64String(user.Password);
+            user.Password = System.Text.Encoding.UTF8.GetString(myBase64ret);
             foreach (var item in user.Role.PermissionRoles.ToList())
             {
                 item.Permission = _permissionRepository.Get(p => p.Id.Equals(item.PermissionId)).GetAwaiter().GetResult();
             } 
-            return resutl.FirstOrDefault();
+            return user;
+        }
+
+        /// <summary>
+        /// Elimina un usuario
+        /// </summary>
+        public async Task<bool> Delete(string Code)
+        {
+            var users = await _userRepository.GetList(u => u.Code.Equals(Code));
+            await _userRepository.Delete(users.FirstOrDefault());
+            return true;
         }
         #endregion
     }
